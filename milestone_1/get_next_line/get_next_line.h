@@ -22,7 +22,8 @@
 # include <stdlib.h>
 # include <fcntl.h>
 
-typedef struct s_list {
+typedef struct s_list
+{
 	char			*data;
 	struct s_list	*next;
 }				t_list;
