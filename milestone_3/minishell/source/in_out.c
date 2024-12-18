@@ -6,23 +6,11 @@
 /*   By: frajaona <frajaona@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 06:03:05 by candriam          #+#    #+#             */
-/*   Updated: 2024/12/18 07:54:22 by frajaona         ###   ########.fr       */
+/*   Updated: 2024/12/18 17:10:31 by candriam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <fcntl.h>
-
-typedef struct s_heredoc
-{
-    char	*read_line;
-    char	*file_name;
-    int		tmp_fd;
-    t_env	*env;
-    char	*delim;
-}				t_heredoc;
-
-t_heredoc *g_heredoc = NULL;
 
 char	*get_hd_pos(char *str)
 {
@@ -47,65 +35,30 @@ char	*get_hd_pos(char *str)
 	return (NULL);
 }
 
-int	check_hd_syntax(char *input)
+void	heredoc_loop(int *status, t_env *env, t_heredoc *resources)
 {
-	if (input[0] == '<' && input[1] == '<')
-		return (syn_error("<<"));
-	else if (input[0] == '>' && input[1] == '>')
-		return (syn_error(">>"));
-	input[1] = '\0';
-	return (syn_error(input));
+	char	*read_line;
+
+	read_line = readline("~> ");
+	while (read_line && !ft_str_equal(read_line, resources->delim))
+	{
+		expand_exit_status(&read_line, *status);
+		expand_var(&read_line, env);
+		ft_putendl_fd(read_line, resources->tmp_fd);
+		free(read_line);
+		read_line = readline("~> ");
+	}
+	resources->read_line = read_line;
 }
 
 void	sigint_handler(int sig)
 {
-	(void)sig;
-	if (g_heredoc)
-	{
-		if (g_heredoc->file_name) free(g_heredoc->file_name);
-		if (g_heredoc->delim) free(g_heredoc->delim);
-		free_ft_env(&g_heredoc->env);
-		rl_clear_history();
-		free(g_heredoc);
-		exit(130);
-	}
-}
+	t_heredoc	**resources;
 
-void	process_heredoc(int *status, t_env *env, char *delim, int hd_nbr)
-{
-	g_heredoc = malloc(sizeof(t_heredoc));
-	if (!g_heredoc)
-	{
-		perror("malloc");
-		exit(EXIT_FAILURE);
-	}
-	g_heredoc->env = env;
-	g_heredoc->delim = delim;
-	g_heredoc->file_name = tmp_name(hd_nbr);
-	g_heredoc->tmp_fd = open(g_heredoc->file_name, O_CREAT
-			| O_RDWR | O_TRUNC, 0644);
-	signal(SIGINT, sigint_handler);
-	g_heredoc->read_line = readline("~> ");
-	while (g_heredoc->read_line && !ft_str_equal(g_heredoc->read_line,
-			g_heredoc->delim))
-	{
-		expand_exit_status(&g_heredoc->read_line, *status);
-		expand_var(&g_heredoc->read_line, g_heredoc->env);
-		ft_putendl_fd(g_heredoc->read_line, g_heredoc->tmp_fd);
-		free(g_heredoc->read_line);
-		g_heredoc->read_line = readline("~> ");
-	}
-	if (!g_heredoc->read_line)
-		ft_print_error("warning: heredoc delimited wanted", g_heredoc->delim);
-	free(g_heredoc->read_line);
-	close(g_heredoc->tmp_fd);
-	free(g_heredoc->file_name);
-	free(g_heredoc->delim);
-	free_ft_env(&g_heredoc->env);
-	rl_clear_history();
-	free(g_heredoc);
-	g_heredoc = NULL;
-	exit(EXIT_SUCCESS);
+	(void)sig;
+	resources = get_heredoc();
+	free_hd(*resources);
+	exit(130);
 }
 
 int	exec_heredoc(char *delim, int hd_nbr, int *status, t_env *env)
@@ -120,7 +73,11 @@ int	exec_heredoc(char *delim, int hd_nbr, int *status, t_env *env)
 		return (0);
 	}
 	else if (c_pid == 0)
+	{
 		process_heredoc(status, env, delim, hd_nbr);
+		free(delim);
+		free_ft_env(&env);
+	}
 	else
 	{
 		*status = wait_child(c_pid, TRUE);
@@ -152,5 +109,4 @@ int	handle_hd(char *input, int *status, t_env *env)
 	}
 	free(delim);
 	return (handle_hd(input, status, env));
-	return (1);
 }

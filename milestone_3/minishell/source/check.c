@@ -6,7 +6,7 @@
 /*   By: frajaona <frajaona@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 06:03:48 by candriam          #+#    #+#             */
-/*   Updated: 2024/12/12 14:45:42 by candriam         ###   ########.fr       */
+/*   Updated: 2024/12/18 16:48:26 by candriam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,14 @@ int	handle_redirect(char *input, int i)
 		return (-1);
 	}
 	return (i);
+}
+
+int	check_hd_syntax(char *input)
+{
+	if (input[0] == '<' && input[1] == '<')
+		return (syn_error("<<"));
+	else if (input[0] == '>' && input[1] == '>')
+		return (syn_error(">>"));
+	input[1] = '\0';
+	return (syn_error(input));
 }

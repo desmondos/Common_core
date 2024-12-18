@@ -6,7 +6,7 @@
 /*   By: candriam <candriam@student.42antananarivo  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 15:57:52 by candriam          #+#    #+#             */
-/*   Updated: 2024/12/03 08:19:45 by candriam         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:31:06 by candriam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ int	builtin_pwd(char **argv)
 	else
 	{
 		getcwd(curr, PATH_MAX);
-		ft_putstr_fd(curr, STDOUT_FILENO);
-		ft_putstr_fd("\n", STDOUT_FILENO);
+		ft_putendl_fd(curr, STDOUT_FILENO);
 	}
 	return (0);
 }

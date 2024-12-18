@@ -6,7 +6,7 @@
 /*   By: frajaona <frajaona@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 15:36:39 by frajaona          #+#    #+#             */
-/*   Updated: 2024/12/16 15:59:12 by frajaona         ###   ########.fr       */
+/*   Updated: 2024/12/18 16:42:37 by candriam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,14 @@ typedef struct s_env
 	char			cwd[ENV_SIZE];
 	struct s_env	*next;
 }				t_env;
+
+typedef struct s_heredoc
+{
+	t_env			*env;
+	char			*delim;
+	char			*read_line;
+	int				tmp_fd;
+}				t_heredoc;
 
 typedef enum e_state
 {

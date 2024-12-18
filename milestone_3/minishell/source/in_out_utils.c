@@ -6,7 +6,7 @@
 /*   By: frajaona <frajaona@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 06:03:19 by candriam          #+#    #+#             */
-/*   Updated: 2024/12/15 14:33:35 by candriam         ###   ########.fr       */
+/*   Updated: 2024/12/18 16:45:33 by candriam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,34 @@ int	create_here_doc(const char *delim)
 	}
 	close(pipe_fds[1]);
 	return (pipe_fds[0]);
+}
+
+t_heredoc	**get_heredoc(void)
+{
+	static t_heredoc	*resources = NULL;
+
+	return (&resources);
+}
+
+void	set_heredoc(t_heredoc *new_resources)
+{
+	t_heredoc	**resources_ptr;
+
+	resources_ptr = get_heredoc();
+	*resources_ptr = new_resources;
+}
+
+void	free_hd(t_heredoc *resources)
+{
+	if (resources)
+	{
+		if (resources->tmp_fd != -1)
+			close(resources->tmp_fd);
+		if (resources->delim)
+			free(resources->delim);
+		if (resources->env)
+			free_ft_env(&resources->env);
+		rl_clear_history();
+		free(resources);
+	}
 }

@@ -21,7 +21,7 @@ SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/main_utils.c $(SRC_DIR)/command.c \
 	   $(SRC_BUILT)/builtin_pwd.c $(SRC_BUILT)/builtin_echo.c \
 	   $(SRC_BUILT)/builtin_env.c $(SRC_BUILT)/builtin_export.c \
 	   $(SRC_BUILT)/builtin_unset.c \
-	   
+
 OBJS = ${SRCS:.c=.o}
 
 LIBFT_DIR = ./libft
@@ -32,7 +32,7 @@ LIBFT_INC = -I${LIBFT_DIR}/includes
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 
 LDFLAGS = -lreadline -lhistory
 

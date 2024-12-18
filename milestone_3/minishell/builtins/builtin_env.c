@@ -28,7 +28,7 @@ int	builtin_env(t_env *envp, char **args)
 	curr = envp;
 	if (args[1])
 	{
-		ft_print_error_env("use without argument or option", args[1], envp);
+		ft_print_error_env("use without arguments or options", args[1], envp);
 		return (EXIT_FAILURE);
 	}
 	while (curr)
