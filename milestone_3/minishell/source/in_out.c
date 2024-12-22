@@ -6,7 +6,7 @@
 /*   By: frajaona <frajaona@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 06:03:05 by candriam          #+#    #+#             */
-/*   Updated: 2024/12/18 17:10:31 by candriam         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:23:15 by frajaona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	sigint_handler(int sig)
 	(void)sig;
 	resources = get_heredoc();
 	free_hd(*resources);
+	close_all_fds();
 	exit(130);
 }
 

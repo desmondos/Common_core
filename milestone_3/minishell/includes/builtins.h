@@ -22,7 +22,6 @@ int		builtin_exit(char **argv, t_env **env);
 int		builtin_pwd(char **argv);
 int		builtin_echo(char **argv, t_env *env);
 int		builtin_env(t_env *envp, char **args);
-void	check_exit(char **argv);
 int		builtin_export(char **args, t_env **env);
 int		env_exist(char *var_name, t_env *env);
 int		builtin_unset(char **args, t_env **envp);

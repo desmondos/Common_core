@@ -6,7 +6,7 @@
 /*   By: frajaona <frajaona@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 06:02:02 by candriam          #+#    #+#             */
-/*   Updated: 2024/12/18 11:03:45 by candriam         ###   ########.fr       */
+/*   Updated: 2024/12/19 11:17:16 by frajaona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	execve_error(char *path, char **args, char **envs)
 		status = CMD_NOT_FOUND;
 		ft_free_array(envs);
 		ft_free_array(args);
+		close_all_fds();
 		exit(status);
 	}
 	ft_print_perror("execve", args[0]);
@@ -34,6 +35,7 @@ void	execve_error(char *path, char **args, char **envs)
 	free(path);
 	ft_free_array(envs);
 	ft_free_array(args);
+	close_all_fds();
 	exit(status);
 }
 
@@ -51,11 +53,6 @@ void	terminate_exec(char **args, int status, t_env *envs)
 	exit(status);
 }
 
-static int	ft_env_has_path(t_env *env)
-{
-	return (ft_env_val("PATH", env) != NULL);
-}
-
 int	execute_extern(char **args, t_env *envs)
 {
 	char	*path;
@@ -66,7 +63,7 @@ int	execute_extern(char **args, t_env *envs)
 	if (is_dir(args[0]))
 		terminate_exec(args, NOT_EXECUTABLE, envs);
 	path = get_executable_path(args[0], envs);
-	if (path == NULL && ft_env_has_path(envs))
+	if (!path)
 	{
 		if (is_path(args[0]))
 			path = ft_strdup(args[0]);
@@ -80,5 +77,6 @@ int	execute_extern(char **args, t_env *envs)
 	if (execve(path, args, env) == -1)
 		execve_error(path, args, env);
 	ft_free_array(env);
+	ft_free_array(args);
 	exit(EXIT_SUCCESS);
 }

@@ -35,6 +35,26 @@ int	has_pipe(char *str)
 	return (0);
 }
 
+char	*get_pipes(char *str)
+{
+	int	pos;
+
+	pos = 0;
+	while (str[pos])
+	{
+		if (str[pos] == '\'' || str[pos] == '"')
+		{
+			pos++;
+			while (str[pos] != '\'' && str[pos] != '"')
+				pos++;
+		}
+		if (str[pos] == '|')
+			return (str);
+		pos++;
+	}
+	return (NULL);
+}
+
 void	handle_pipe(int fd_out, char *curr, char **cmds)
 {
 	int			is_first_cmd;
@@ -51,7 +71,8 @@ void	handle_pipe(int fd_out, char *curr, char **cmds)
 	{
 		if (pipe(pipe_fd) == -1)
 			ft_print_perror("pipe", curr);
-		redir_fd(pipe_fd[1], STDOUT_FILENO);
+		else
+			redir_fd(pipe_fd[1], STDOUT_FILENO);
 	}
 	else
 		redir_fd(fd_out, STDOUT_FILENO);

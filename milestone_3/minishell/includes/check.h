@@ -6,7 +6,7 @@
 /*   By: frajaona <frajaona@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 08:49:39 by candriam          #+#    #+#             */
-/*   Updated: 2024/12/13 17:51:25 by frajaona         ###   ########.fr       */
+/*   Updated: 2024/12/21 08:38:41 by frajaona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int		handle_redirect(char *input, int i);
 int		empty_input(char *input);
 int		unclose_quotes(char *str);
 int		is_invalid_input(char *input);
+int		pipe_end_input(char *input);
 int		pipe_start_input(char *input);
 char	*get_pipes(char *str);
 int		invalid_token(char c);
@@ -37,5 +38,8 @@ int		is_under_score(char c);
 int		ft_is_digit(char c);
 int		ft_is_alnum(char c);
 int		is_var_name(char c);
+
+bool	is_dollar_quote(char *input);
+void	remove_dollar(char *input);
 
 #endif

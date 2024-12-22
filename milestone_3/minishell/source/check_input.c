@@ -6,7 +6,7 @@
 /*   By: frajaona <frajaona@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 06:03:48 by candriam          #+#    #+#             */
-/*   Updated: 2024/12/12 16:12:58 by candriam         ###   ########.fr       */
+/*   Updated: 2024/12/21 09:44:02 by frajaona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,29 @@ int	unclose_quotes(char *str)
 	}
 }
 
+int	pipe_end_input(char *input)
+{
+	int	i;
+
+	i = 0;
+	while (input[i])
+		i++;
+	i--;
+	while (i >= 0 && ft_isspace(input[i]))
+		i--;
+	if (i >= 0 && input[i] == '|')
+	{
+		syn_error("|");
+		return (1);
+	}
+	return (0);
+}
+
 int	is_invalid_input(char *input)
 {
 	if (pipe_start_input(input))
+		return (1);
+	if (pipe_end_input(input))
 		return (1);
 	if (empty_pipe(input))
 		return (1);
@@ -75,24 +95,4 @@ int	pipe_start_input(char *input)
 		return (1);
 	}
 	return (0);
-}
-
-char	*get_pipes(char *str)
-{
-	int	pos;
-
-	pos = 0;
-	while (str[pos])
-	{
-		if (str[pos] == '\'' || str[pos] == '"')
-		{
-			pos++;
-			while (str[pos] != '\'' && str[pos] != '"')
-				pos++;
-		}
-		if (str[pos] == '|')
-			return (str);
-		pos++;
-	}
-	return (NULL);
 }

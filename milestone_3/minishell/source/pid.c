@@ -6,7 +6,7 @@
 /*   By: frajaona <frajaona@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 15:32:51 by frajaona          #+#    #+#             */
-/*   Updated: 2024/12/18 17:04:03 by candriam         ###   ########.fr       */
+/*   Updated: 2024/12/19 11:18:57 by frajaona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,6 @@ void	process_heredoc(int *status, t_env *env, char *delim, int hd_nbr)
 		ft_print_error("warning: heredoc delimited by EOF. Wanted", delim);
 	free(resources->read_line);
 	free_hd(resources);
+	close_all_fds();
 	exit(EXIT_SUCCESS);
 }

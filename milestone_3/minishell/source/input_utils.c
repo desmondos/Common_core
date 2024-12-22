@@ -6,7 +6,7 @@
 /*   By: frajaona <frajaona@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 12:49:24 by frajaona          #+#    #+#             */
-/*   Updated: 2024/12/15 14:33:46 by candriam         ###   ########.fr       */
+/*   Updated: 2024/12/20 14:09:26 by frajaona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,6 @@ int	do_ignore(char *input)
 {
 	if (input[0] == '#')
 		return (1);
-	if (unclose_quotes(input) == 1)
-	{
-		ft_putendl_fd("unclosed quotes detected", STDERR_FILENO);
-		return (1);
-	}
 	return (0);
 }
 

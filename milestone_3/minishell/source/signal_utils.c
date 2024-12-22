@@ -33,12 +33,18 @@ int	handle_sig_int(int status, int is_last)
 
 int	wait_child(int c_pid, int is_last)
 {
-	int	status;
+	int		status;
+	char	*str;
 
+	status = 0;
 	if (c_pid == FORK_ERROR)
 		return (EXIT_FAILURE);
 	if (waitpid(c_pid, &status, 0) == -1)
-		ft_print_perror("waitpid", ft_itoa(c_pid));
+	{
+		str = ft_itoa(c_pid);
+		ft_print_perror("waitpid", str);
+		free(str);
+	}
 	if (WIFSIGNALED(status))
 		return (handle_sig_int(status, is_last));
 	if (WIFEXITED(status))

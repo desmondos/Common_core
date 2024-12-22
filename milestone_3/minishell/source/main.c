@@ -6,7 +6,7 @@
 /*   By: frajaona <frajaona@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 22:00:44 by candriam          #+#    #+#             */
-/*   Updated: 2024/12/18 11:04:17 by candriam         ###   ########.fr       */
+/*   Updated: 2024/12/20 14:00:38 by frajaona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ int	main_loop(t_env *env)
 
 int	main(int argc, char **argv, char **environ)
 {
-	int	status;
+	int		status;
+	t_env	*env_vars;
 
 	status = EXIT_SUCCESS;
 	if (argv != NULL && argc > 1)
@@ -46,6 +47,9 @@ int	main(int argc, char **argv, char **environ)
 		ft_putendl_fd("minishell can not take arguments", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
-	status = main_loop(ft_copy_environs(environ));
+	env_vars = ft_copy_environs(environ);
+	status = main_loop(env_vars);
+	ft_free_array(environ);
+	free_ft_env(&env_vars);
 	return (status);
 }

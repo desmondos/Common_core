@@ -6,7 +6,7 @@
 /*   By: frajaona <frajaona@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 06:03:48 by candriam          #+#    #+#             */
-/*   Updated: 2024/12/12 16:13:23 by candriam         ###   ########.fr       */
+/*   Updated: 2024/12/21 08:38:01 by frajaona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,39 @@ int	invalid_redirect(char *input)
 	if (invalid_token(*red_pos))
 		return (check_hd_syntax(red_pos));
 	return (invalid_redirect(red_pos));
+}
+
+bool	is_dollar_quote(char *input)
+{
+	char	*start;
+
+	start = input;
+	while (*input)
+	{
+		if ((*input == '$' && *(input + 1) == '"')
+			|| (*input == '$' && *(input + 1) == '\''))
+		{
+			if ((input > start)
+				&& (*(input - 1) == '"' || *(input - 1) == '\''))
+				return (false);
+			return (true);
+		}
+		input++;
+	}
+	return (false);
+}
+
+void	remove_dollar(char *input)
+{
+	char	*pos;
+
+	pos = ft_strchr(input, '$');
+	while (pos != NULL)
+	{
+		if (pos[1] == '"' || pos[1] == '\'' )
+			ft_memmove(pos, pos + 1, ft_strlen(pos));
+		else
+			input = pos + 1;
+		pos = ft_strchr(input, '$');
+	}
 }

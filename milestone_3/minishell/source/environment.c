@@ -61,7 +61,14 @@ void	add_back(char *data, t_env **node)
 	struct s_env	*curr;
 
 	new = malloc(sizeof(struct s_env));
+	if (!new)
+		return ;
 	new->data = ft_strdup(data);
+	if (!new->data)
+	{
+		free(new);
+		return ;
+	}
 	new->next = NULL;
 	if (!*node)
 	{

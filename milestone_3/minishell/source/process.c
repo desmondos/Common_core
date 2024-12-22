@@ -61,21 +61,27 @@ char	*find_executable_in_path(char **path_dirs, char *command)
 char	*get_executable_path(char *command, t_env *env)
 {
 	char	**path_dirs;
-	char	**command_parts;
 	char	*executable_path;
+	char	curr[PATH_MAX];
 
+	executable_path = NULL;
 	if (!command || !env)
 		return (NULL);
-	path_dirs = get_path_directories(env);
-	command_parts = ft_split(command, ' ');
-	if (!path_dirs || !command_parts || !command_parts[0])
+	if (command[0] == '.' && command[1] == '/')
 	{
-		ft_free_array(path_dirs);
-		ft_free_array(command_parts);
-		return (NULL);
+		executable_path = ft_strjoin(getcwd(curr, PATH_MAX), command);
+		if (executable_path && access(executable_path, F_OK | X_OK) != 0)
+		{
+			free(executable_path);
+			return (NULL);
+		}
 	}
-	executable_path = find_executable_in_path(path_dirs, command_parts[0]);
-	ft_free_array(path_dirs);
-	ft_free_array(command_parts);
+	else
+	{
+		path_dirs = get_path_directories(env);
+		if (path_dirs)
+			executable_path = find_executable_in_path(path_dirs, command);
+		ft_free_array(path_dirs);
+	}
 	return (executable_path);
 }

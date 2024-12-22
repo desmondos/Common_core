@@ -12,24 +12,6 @@
 
 #include "../includes/minishell.h"
 
-void	check_exit(char **argv)
-{
-	int		i;
-	long	status;
-
-	if (argv == NULL || argv[1] == NULL)
-	{
-		close_all_fds();
-		exit(EXIT_SUCCESS);
-	}
-	status = ft_atol(argv[1]);
-	if (status == -1)
-		exit_error("exit", "numeric argument required", MISUSE_CMD);
-	i = 2;
-	while (argv[i] != NULL)
-		exit_error("exit", "too many arguments", EXIT_FAILURE);
-}
-
 int	fits_in_long_long(char *str)
 {
 	long long	out;
@@ -70,7 +52,7 @@ static void	check_args_error(char **args)
 	if (!fits_in_long_long(exit_status))
 	{
 		ft_free_array(args);
-		exit_error("exit", "numeric argument required", 2);
+		exit_error("exit", "numeric argument required", MISUSE_CMD);
 	}
 	if (args[2] != NULL)
 	{

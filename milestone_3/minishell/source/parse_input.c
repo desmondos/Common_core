@@ -6,7 +6,7 @@
 /*   By: frajaona <frajaona@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 06:04:48 by candriam          #+#    #+#             */
-/*   Updated: 2024/12/12 15:36:20 by candriam         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:30:49 by frajaona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,29 @@ void	substitute_spaces(char *str, char delimeter)
 		substitute_spaces(str, delimeter);
 }
 
+static char	**refact_arg(char **args)
+{
+	int		j;
+
+	j = 0;
+	while (j < ft_len(args))
+	{
+		if ((args[j][0] == '"' && args[j][1] == '"')
+			|| (args[j][0] == '\'' && args[j][1] == '\''))
+		{
+			if (j > 0)
+				rm_quotes(args[j]);
+			j++;
+		}
+		else
+		{
+			rm_quotes(args[j]);
+			j++;
+		}
+	}
+	return (args);
+}
+
 char	**split_input(char *input)
 {
 	char	**args;
@@ -56,8 +79,8 @@ char	**split_input(char *input)
 		return (ft_split(input, ' '));
 	substitute_spaces(input, '"');
 	substitute_spaces(input, '\'');
-	rm_quotes(input);
 	args = ft_split(input, ' ');
 	restore_subst_space(args);
+	refact_arg(args);
 	return (args);
 }

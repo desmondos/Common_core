@@ -6,7 +6,7 @@
 /*   By: frajaona <frajaona@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 11:25:06 by candriam          #+#    #+#             */
-/*   Updated: 2024/12/16 16:26:36 by frajaona         ###   ########.fr       */
+/*   Updated: 2024/12/21 08:37:52 by frajaona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,23 @@ void	expand_var(char **input, t_env *env)
 	char	*var_value;
 	int		name_size;
 
-	var_position = var_pos(*input);
-	if (var_position)
+	if (is_dollar_quote(*input) == true)
+		remove_dollar(*input);
+	else
 	{
-		name_size = 0;
-		while (is_var_name(var_position[name_size + 1]))
-			name_size++;
-		var_name = ft_substr(var_position, 1, name_size);
-		*var_position = '\0';
-		var_value = ft_env_val(var_name, env);
-		update_input(input, var_value, (var_position + 1 + name_size));
-		free(var_name);
-		expand_var(input, env);
+		var_position = var_pos(*input);
+		if (var_position)
+		{
+			name_size = 0;
+			while (is_var_name(var_position[name_size + 1]))
+				name_size++;
+			var_name = ft_substr(var_position, 1, name_size);
+			*var_position = '\0';
+			var_value = ft_env_val(var_name, env);
+			update_input(input, var_value, (var_position + 1 + name_size));
+			free(var_name);
+			expand_var(input, env);
+		}
 	}
 }
 
