@@ -16,8 +16,7 @@ void	take_forks(t_philo *philos)
 {
 	pthread_mutex_lock(&philos->forks[philos->id - 1]);
 	if (philos->id == 1)
-		pthread_mutex_lock(&philos
-			->forks[philos->num_philos - 1]);
+		pthread_mutex_lock(&philos->forks[philos->num_philos - 1]);
 	else
 		pthread_mutex_lock(&philos->forks[philos->id - 2]);
 	pthread_mutex_lock(philos->mutex);
@@ -39,8 +38,7 @@ void	put_forks(t_philo *philos)
 {
 	pthread_mutex_unlock(&philos->forks[philos->id - 1]);
 	if (philos->id == 1)
-		pthread_mutex_unlock(&philos
-			->forks[philos->num_philos - 1]);
+		pthread_mutex_unlock(&philos->forks[philos->num_philos - 1]);
 	else
 		pthread_mutex_unlock(&philos->forks[philos->id - 2]);
 }
