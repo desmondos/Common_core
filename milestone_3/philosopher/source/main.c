@@ -14,25 +14,18 @@
 
 int	main(int argc, char **argv)
 {
-	t_philo			*philos;
-	t_philo			*state;
+	t_data	*data;
+	t_philo	*philo;
 
-	philos = init_simulation(argc, argv);
-	if (!philos)
-	{
-		ft_putendl_fd("simulation init failed", STDERR_FILENO);
-		return (1);
-	}
-	state = set_data_health(philos);
-	if (!state)
-	{
-		ft_putendl_fd("data health init failed", STDERR_FILENO);
-		return (1);
-	}
-	philo_to_data(philos, state);
-	create_threads(philos);
-	pthread_create(&state->thread, NULL, check_philos_state, state);
-	pthread_join(state->thread, NULL);
-	free_all(philos, state);
-	return (0);
+	data = NULL;
+	philo = NULL;
+	if (check_args(argc, argv) != SUCCESS)
+		return ((void)free_all(philo, data), EXIT_FAILURE);
+	if (check_valid_args(argc, argv))
+		return ((void)free_all(philo, data), EXIT_SUCCESS);
+	if (init_all(&philo, &data, argc, argv) != SUCCESS)
+		return ((void)free_all(philo, data), EXIT_FAILURE);
+	if (simulator(philo, data) != SUCCESS)
+		return ((void)free_all(philo, data), EXIT_FAILURE);
+	return ((void)free_all(philo, data), EXIT_SUCCESS);
 }

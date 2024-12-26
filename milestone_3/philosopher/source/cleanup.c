@@ -12,23 +12,14 @@
 
 #include "../include/philosopher.h"
 
-void	free_all(t_philo *philos, t_philo *state)
+void	free_all(t_philo *philo, t_data *data)
 {
-	int	i;
-
-	i = 0;
-	ft_usleep(philos->time_to_die + philos->time_to_eat
-		+ philos->time_to_sleep + 100);
-	while (i < philos->num_philos)
-	{
-		pthread_mutex_destroy(&philos[i].forks[i]);
-		i++;
-	}
-	pthread_mutex_destroy(state->mutex);
-	free(philos->forks);
-	free(philos->meals_eaten);
-	free(philos->last_meal_time);
-	free(philos->mutex);
-	free(philos);
-	free(state);
+	if (data && data->mutex)
+		free (data->mutex);
+	if (data)
+		free (data);
+	if (philo && philo->fork)
+		free (philo->fork);
+	if (philo)
+		free (philo);
 }

@@ -25,52 +25,79 @@
 # include <limits.h>
 # include <errno.h>
 
-typedef struct s_philo
+typedef enum e_mutexes
 {
-	int				id;
-	int				num_forks;
-	long			*meals_eaten;
-	long long		*last_meal_time;
-	long			start_time;
-	long			num_philos;
+	PRINT,
+	MEALS,
+	DONE,
+	DIED,
+	M_NUM
+}			t_mutexes;
+
+typedef enum e_bool
+{
+	FALSE,
+	TRUE
+}			t_bool;
+
+typedef enum e_exit
+{
+	SUCCESS,
+	FAILURE
+}			t_exit;
+
+typedef struct s_data
+{
+	int				done;
+	int				died;
+	long			philo_nb;
 	long			time_to_die;
 	long			time_to_eat;
 	long			time_to_sleep;
-	int				num_must_eat;
-	pthread_t		thread;
-	pthread_mutex_t	*forks;
+	long			time_to_think;
+	long			must_eat;
+	long			simbegin;
 	pthread_mutex_t	*mutex;
+}				t_data;
+
+typedef struct s_philo
+{
+	int				id;
+	long			last_meal;
+	long			meals_counter;
+	long			left_fork;
+	long			right_fork;
+	pthread_mutex_t	*fork;
+	t_data			*data;
 }				t_philo;
 
-int				main(int argc, char **argv);
-void			ft_usleep(long long time_to_sleep);
-void			*safe_malloc(size_t size);
-long long		get_time(void);
-void			ft_putendl_fd(char *s, int fd);
-void			ft_putnbr_fd(int n, int fd);
-void			put_error(char *msg);
-int				check_pos_nbr(char *str);
-void			free_all(t_philo *philos, t_philo *state);
-int				is_valid_args(int argc, char **argv, t_philo *philo);
-long			ft_atol(const char *nptr);
-t_philo			*init_simulation(int argc, char **argv);
-t_philo			*init_philo(t_philo *philo);
-pthread_mutex_t	*init_forks(int num_philos);
-long long		*init_last_meal_time(int num_philo);
-void			init_all_data(t_philo *philos, t_philo *philo,
-					pthread_mutex_t *num_forks, long long *last_meal_time);
-t_philo			*set_data_health(t_philo *philos);
-void			philo_to_data(t_philo *philos, t_philo *data);
-bool			check_meals_eaten(t_philo *data);
-void			*check_philos_state(void *philos);
-void			*philo_routine(void *philo);
-void			create_threads(t_philo *philos);
-void			sleeping(t_philo *philos);
-void			thinking(t_philo *philos);
-void			take_forks(t_philo *philos);
-void			eating(t_philo *philos);
-void			put_forks(t_philo *philos);
-void			to_dead(int id, long time);
-void			print_action(t_philo *philo, int id, char *action);
+void	free_all(t_philo *philo, t_data *data);
+int		check_valid_args(int ac, char **av);
+int		init_philo(t_philo **philo, t_data *data);
+int		init_data_mutexes(t_data **data);
+int		init_data(t_data **data, int ac, char **av);
+int		init_all(t_philo **philo, t_data **data, int ac, char **av);
+int		main(int argc, char **argv);
+int		start_eating(t_philo *self);
+int		finish_eating(t_philo *self);
+int		eating(t_philo *self);
+void	*simulation(void *arg);
+void	print_action(t_philo *philo, char *a);
+void	died(t_data *data);
+void	done(t_data *data);
+int		check_died(t_philo *philo);
+int		check_done(t_philo *philo);
+void	destroy_mutexes(t_philo *philo, t_data *data);
+int		all_done(t_philo *philo, t_data *data);
+int		monitor(t_philo *philo, t_data *data);
+int		simulator(t_philo *philo, t_data *data);
+long	get_abs_time(void);
+long	get_rel_time(unsigned long start);
+void	correct_usleep(unsigned long msec);
+int		is_digit(char *str);
+int		check_args(int argc, char **argv);
+long	ft_atol(char const *str);
+int		ft_max(int a, int b);
+int		ft_min(int a, int b);
 
 #endif

@@ -12,19 +12,35 @@
 
 #include "../include/philosopher.h"
 
-long long	get_time(void)
+long	get_abs_time(void)
 {
 	struct timeval	time;
+	unsigned long	sec;
+	unsigned long	micro;
 
-	gettimeofday(&time, NULL);
-	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
+	if (gettimeofday(&time, NULL) == -1)
+		write(2, "Error: GETTIMEOFDAY(2)\n", 28);
+	sec = time.tv_sec * 1000;
+	micro = time.tv_usec / 1000;
+	return (sec + micro);
 }
 
-void	ft_usleep(long long time_to_sleep)
+long	get_rel_time(unsigned long start)
 {
-	long long	start_time;
+	unsigned long	abs_time;
 
-	start_time = get_time();
-	while (get_time() - start_time < time_to_sleep)
-		usleep(100);
+	abs_time = get_abs_time();
+	return (abs_time - start);
+}
+
+void	correct_usleep(unsigned long msec)
+{
+	int	i;
+
+	i = 0;
+	while (i < 20)
+	{
+		usleep(msec * 50);
+		i++;
+	}
 }
