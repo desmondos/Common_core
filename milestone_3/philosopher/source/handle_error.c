@@ -6,45 +6,56 @@
 /*   By: candriam <candriam@student.42antananarivo  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 09:12:15 by candriam          #+#    #+#             */
-/*   Updated: 2024/12/22 16:04:16 by candriam         ###   ########.fr       */
+/*   Updated: 2024/12/27 06:44:57 by candriam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosopher.h"
 
+void	ft_putendl_fd(char *s, int fd)
+{
+	size_t	i;
+
+	i = 0;
+	if (s)
+	{
+		while (s[i])
+		{
+			write(fd, &s[i], 1);
+			i++;
+		}
+		write(fd, "\n", 1);
+	}
+}
+
 int	check_args(int argc, char **argv)
 {
-	if (argc < 5)
+	if (argc < 5 || argc > 6)
 	{
-		write (2, "Error: Too few arguments.\n", 26);
-		return (FAILURE);
-	}
-	if (argc > 6)
-	{
-		write (2, "Error: Too many arguments.\n", 27);
-		return (FAILURE);
+		ft_putendl_fd("Error: Too few or too many arguments.", STDERR_FILENO);
+		return (1);
 	}
 	while (argc-- > 1)
 	{
-		if (is_digit (argv[argc]) == FALSE)
+		if (is_digit(argv[argc]) == 0)
 		{
-			write (2, "Error: Invalid character.\n", 26);
-			return (FAILURE);
+			ft_putendl_fd("Error: Invalid argument.", STDERR_FILENO);
+			return (1);
 		}
-		if (ft_atol (argv[argc]) > INT_MAX || ft_atol (argv[argc]) < 0)
+		if (ft_atol(argv[argc]) > INT_MAX || ft_atol(argv[argc]) < 0)
 		{
-			write (2, "Error: Out of range value.\n", 27);
-			return (FAILURE);
+			ft_putendl_fd("Error: Out of range value.", STDERR_FILENO);
+			return (1);
 		}
 	}
-	return (SUCCESS);
+	return (0);
 }
 
-int	check_valid_args(int ac, char **av)
+int	check_valid_args(int argc, char **argv)
 {
-	if ((ac == 6 && ft_atol (av[5]) == 0))
-		return (TRUE);
-	if (ft_atol (av[1]) == 0)
-		return (TRUE);
-	return (FALSE);
+	if ((argc == 6 && ft_atol(argv[5]) == 0))
+		return (1);
+	if (ft_atol(argv[1]) == 0)
+		return (1);
+	return (0);
 }

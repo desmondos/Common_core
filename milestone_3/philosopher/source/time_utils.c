@@ -6,41 +6,38 @@
 /*   By: candriam <candriam@student.42antananarivo  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 09:12:15 by candriam          #+#    #+#             */
-/*   Updated: 2024/12/22 17:39:18 by candriam         ###   ########.fr       */
+/*   Updated: 2024/12/27 08:05:39 by candriam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosopher.h"
 
-long	get_abs_time(void)
+long	get_time(void)
 {
 	struct timeval	time;
-	unsigned long	sec;
-	unsigned long	micro;
+	long long		sec;
+	long long		micro;
 
 	if (gettimeofday(&time, NULL) == -1)
-		write(2, "Error: GETTIMEOFDAY(2)\n", 28);
+		ft_putendl_fd("Error: GETTIMEOFDAY(2)", STDERR_FILENO);
 	sec = time.tv_sec * 1000;
 	micro = time.tv_usec / 1000;
 	return (sec + micro);
 }
 
-long	get_rel_time(unsigned long start)
+long	get_relative_time(long long start)
 {
-	unsigned long	abs_time;
+	long long	time;
 
-	abs_time = get_abs_time();
-	return (abs_time - start);
+	time = get_time();
+	return (time - start);
 }
 
-void	correct_usleep(unsigned long msec)
+void	correct_usleep(long long time_to_sleep)
 {
-	int	i;
+	long long	start_time;
 
-	i = 0;
-	while (i < 20)
-	{
-		usleep(msec * 50);
-		i++;
-	}
+	start_time = get_time();
+	while (get_time() - start_time < time_to_sleep)
+		usleep(time_to_sleep * 50);
 }

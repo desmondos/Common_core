@@ -6,11 +6,21 @@
 /*   By: candriam <candriam@student.42antananarivo  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 09:12:15 by candriam          #+#    #+#             */
-/*   Updated: 2024/12/26 07:49:21 by candriam         ###   ########.fr       */
+/*   Updated: 2024/12/27 08:17:16 by candriam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosopher.h"
+
+void	*safe_malloc(size_t size)
+{
+	void	*vptr;
+
+	vptr = malloc(size);
+	if (vptr == NULL)
+		return (NULL);
+	return (vptr);
+}
 
 int	is_digit(char *str)
 {
@@ -22,8 +32,8 @@ int	is_digit(char *str)
 	while (str[i] >= '0' && str[i] <= '9')
 		i++;
 	if (str[i] == '\0')
-		return (TRUE);
-	return (FALSE);
+		return (1);
+	return (0);
 }
 
 long	ft_atol(char const *str)
