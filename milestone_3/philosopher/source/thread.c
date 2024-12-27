@@ -70,7 +70,7 @@ int	monitor(t_philo *philo, t_data *data)
 			break ;
 		}
 		i = (i + 1) % data->philo_count;
-		usleep(200);
+		usleep(1000);
 	}
 	return (0);
 }

@@ -39,5 +39,5 @@ void	correct_usleep(long long time_to_sleep)
 
 	start_time = get_time();
 	while (get_time() - start_time < time_to_sleep)
-		usleep(time_to_sleep * 50);
+		usleep(500);
 }
