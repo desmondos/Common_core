@@ -6,7 +6,7 @@
 /*   By: candriam <candriam@student.42antananarivo  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 09:12:15 by candriam          #+#    #+#             */
-/*   Updated: 2024/12/27 07:39:56 by candriam         ###   ########.fr       */
+/*   Updated: 2024/12/27 08:49:10 by candriam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 void	print_action(t_philo *philo, char *action)
 {
 	pthread_mutex_lock(&philo->data->mutex[PRINT]);
-	if (*action == 'd' || (!check_died(philo) && !check_done(philo)))
+	if (ft_strncmp(action, "died", 4) == 0 || (!check_died(philo)
+			&& !check_done(philo)))
 		printf("%lu %d %s\n", get_relative_time(philo->data->sim_start),
 			philo->id, action);
 	pthread_mutex_unlock(&philo->data->mutex[PRINT]);

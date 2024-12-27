@@ -6,7 +6,7 @@
 /*   By: candriam <candriam@student.42antananarivo  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 09:12:15 by candriam          #+#    #+#             */
-/*   Updated: 2024/12/27 08:31:49 by candriam         ###   ########.fr       */
+/*   Updated: 2024/12/27 08:47:55 by candriam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_philo
 	t_data			*data;
 }				t_philo;
 
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	ft_putendl_fd(char *s, int fd);
 void	*safe_malloc(size_t size);
 void	free_all(t_philo *philo, t_data *data);

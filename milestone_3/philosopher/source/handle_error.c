@@ -6,7 +6,7 @@
 /*   By: candriam <candriam@student.42antananarivo  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 09:12:15 by candriam          #+#    #+#             */
-/*   Updated: 2024/12/27 06:44:57 by candriam         ###   ########.fr       */
+/*   Updated: 2024/12/27 08:47:40 by candriam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,19 @@ void	ft_putendl_fd(char *s, int fd)
 		}
 		write(fd, "\n", 1);
 	}
+}
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	while (n > 0)
+	{
+		if (*s1 != *s2 || *s1 == '\0' || *s2 == '\0')
+			return (*(unsigned char *)s1 - *(unsigned char *)s2);
+		s1++;
+		s2++;
+		n--;
+	}
+	return (0);
 }
 
 int	check_args(int argc, char **argv)
